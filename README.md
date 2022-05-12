@@ -1,0 +1,2 @@
+# pokecrud
+django 4
