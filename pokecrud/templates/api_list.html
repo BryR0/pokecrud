@@ -39,9 +39,13 @@
                     document.querySelector("tbody").addEventListener("click", function(e) {
                         // validtion
                         if (e.target.tagName != "A" || e.target.className != "btn btn-danger" )
-                            return; 
-                        if (!confirm("Are you sure?"))
                             return;
+                        
+                        e.preventDefault();
+                        if (!confirm("Are you sure?"))
+                             return;
+
+
                         // pass validation
                         e.preventDefault();
                         const full = location.protocol + '//' + location.host;
