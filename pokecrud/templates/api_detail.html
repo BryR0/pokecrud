@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %} POKEMON {{api.name}} {% endblock title %}
+{% block content %}
+<a href="{% url 'api:home' %}" class="btn btn-primary">🔙</i>Return</a>
+<h1> POKEMON {{api.name}}</h1>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Picture</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">{{api.name}}</th>
+            <td colspan="2">
+
+                {% if api.image %}
+                    <img src="/{{api.image}}" alt="{{api.name}}" width="100" height="100">
+                {% else %}
+                    <img src="/static/images/no-image.png" alt="{{api.name}}" width="100" height="100">
+                {% endif %}
+                
+            </td>
+        </tr>
+    </tbody>
+</table>
+{% endblock content %}

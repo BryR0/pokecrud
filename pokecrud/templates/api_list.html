@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %} API List  {% endblock title %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Poke List <a href="{% url 'api:create' %}" class="btn btn-success">Add</a></h1>
+            {% csrf_token %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Image</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for api in apis %}
+                    <tr>
+                        <td>{{ api.id }}</td>
+                        <td>{{ api.name }}</td>
+                        <td>
+                            {% if api.image %}
+                            <img src="/{{api.image}}" alt="{{api.name}}" width="100" height="100">
+                            {% else %}
+                            <img src="/static/images/no-image.png" alt="{{api.name}}" width="100" height="100">
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'api:detail' api.id %}" class="btn btn-primary">Detail</a>
+                            <a href="{% url 'api:update' api.id %}" class="btn btn-warning">Edit</a>
+                            <a href="{% url 'api:delete' api.id %}" data-id="{{api.id}}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <script>
+                    document.querySelector("tbody").addEventListener("click", function(e) {
+                        // validtion
+                        if (e.target.tagName != "A" || e.target.className != "btn btn-danger" )
+                            return; 
+                        if (!confirm("Are you sure?"))
+                            return;
+                        // pass validation
+                        e.preventDefault();
+                        const full = location.protocol + '//' + location.host;
+                        const url = full + e.target.getAttribute("href");
+
+                            fetch(url,{
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRFToken': document.querySelector("input[name='csrfmiddlewaretoken']").value
+                                },
+                                body:  JSON.stringify({
+                                    'csrfmiddlewaretoken': document.querySelector("input[name='csrfmiddlewaretoken']").value
+                                })
+                            }).then(response => response)
+                            .then(data => {
+                                if (data.status == 200)
+                                    e.path[2].remove();
+                            })
+                        });
+                </script>
+{% endblock content %}

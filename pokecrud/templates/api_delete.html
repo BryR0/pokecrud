@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="{% url 'api:home' %}" class="btn btn-primary">🔙</i>Return</a>
+Are you sure delete ?
+<form method="POST">
+
+{% csrf_token %}
+{{form}}
+<button type="submit">Delete</button>
+</form>
+{% endblock content %}
